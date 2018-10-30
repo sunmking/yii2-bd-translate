@@ -1,0 +1,24 @@
+{
+    "name": "saviorlv/yii2-bd-translate",
+    "description": "基于百度的翻译接口 SDK for Yii2",
+    "keywords": [ "yii2", "baidu", "百度", "translate", "翻译","php","sdk"],
+    "type": "library",
+    "license": "MIT",
+    "homepage": "https://github.com/saviorlv/yii2-bd-translate",
+    "authors": [
+        {
+            "name": "saviorlv",
+            "homepage": "https://saviorlv.github.io/"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.0",
+        "yiisoft/yii2": "^2.0.15",
+        "guzzlehttp/guzzle": "^6.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Saviorlv\\Baidu\\": "src/"
+        }
+    }
+}
