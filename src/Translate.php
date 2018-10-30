@@ -104,7 +104,7 @@ class Translate extends Component
 
         try {
             $response = $this->getHttpClient()->get($this->apiUrl, [
-                'query' => $query,
+                'query' => $args,
             ])->getBody()->getContents();
 
             $res = \json_decode($response, true);
