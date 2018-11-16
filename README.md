@@ -1,186 +1,79 @@
-# yii2-weather 基于高德开放平台的天气信息组件。
+# yii2-bd-translate 基于百度的翻译接口 SDK for Yii2 组件。
 
 ## 安装
 
 ```sh
-$ composer require saviorlv/yii2-weather -vvv
+$ composer require saviorlv/yii2-bd-translate -vvv
 ```
 
 ## 配置
 
-在使用本扩展之前，你需要去 [高德开放平台](https://lbs.amap.com/dev/id/newuser) 注册账号，然后创建应用，获取应用的 API Key。
-
+在使用本扩展之前，你需要去 [百度翻译开放平台](http://fanyi-api.baidu.com/api/trans/product/apidoc) 注册账号，然后创建应用，获取应用的 API Key。
 
 ## 使用
 
-> 在config/main.php配置文件中定义component配置信息
+> 在 config/main.php 配置文件中定义 component 配置信息
 
 ```php
 'components' => [
   .....
-  'weather' => [
-      'class' => 'Saviorlv\Amap\Weather',
-      'key' => 'xxxxxxxxx'
+  "bdTrans" => [
+        'class' => 'Saviorlv\Baidu\Translate',
+        'app_id' => 'xxx',
+        'sec_key' => 'xxxxx'
     ],
   ....
 ]
 
 ```
 
-###  获取实时天气
+### 获取
 
 ```php
-$response = Yii::$app->weather->getLiveWeather('深圳');
+$response = Yii::$app->bdTrans->translate("基于百度的翻译接口", 'zh', 'en');;
 ```
-示例：
 
-```json
-{
-    "status": "1",
-    "count": "1",
-    "info": "OK",
-    "infocode": "10000",
-    "lives": [
-        {
-            "province": "广东",
-            "city": "深圳市",
-            "adcode": "440300",
-            "weather": "中雨",
-            "temperature": "27",
-            "winddirection": "西南",
-            "windpower": "5",
-            "humidity": "94",
-            "reporttime": "2018-08-21 16:00:00"
-        }
+返回示例：
+
+```array
+[
+  "code"=> "58000",
+  "data"=> [ "client_ip"=> "58.38.220.180" ],
+  "msg"=> "客户端IP非法"
+]
+```
+
+```array
+[
+  "code"=> "0",
+  "msg"=> "请求成功",
+  "data"=> [
+        "from"=> "zh",
+        "to"=> "en",
+        "trans_result"=> [
+            "src"=> "xxxxxxxwww",
+             "dst"=> "Xxxxxxxwww"
+             ]
     ]
-}
-```
-
-### 获取近期天气预报
-
-```php
-$response = Yii::$app->weather->getForecastsWeather('深圳');
-```
-
-示例：
-
-```json
-{
-    "status": "1", 
-    "count": "1", 
-    "info": "OK", 
-    "infocode": "10000", 
-    "forecasts": [
-        {
-            "city": "深圳市", 
-            "adcode": "440300", 
-            "province": "广东", 
-            "reporttime": "2018-08-21 11:00:00", 
-            "casts": [
-                {
-                    "date": "2018-08-21", 
-                    "week": "2", 
-                    "dayweather": "雷阵雨", 
-                    "nightweather": "雷阵雨", 
-                    "daytemp": "31", 
-                    "nighttemp": "26", 
-                    "daywind": "无风向", 
-                    "nightwind": "无风向", 
-                    "daypower": "≤3", 
-                    "nightpower": "≤3"
-                }, 
-                {
-                    "date": "2018-08-22", 
-                    "week": "3", 
-                    "dayweather": "雷阵雨", 
-                    "nightweather": "雷阵雨", 
-                    "daytemp": "32", 
-                    "nighttemp": "27", 
-                    "daywind": "无风向", 
-                    "nightwind": "无风向", 
-                    "daypower": "≤3", 
-                    "nightpower": "≤3"
-                }, 
-                {
-                    "date": "2018-08-23", 
-                    "week": "4", 
-                    "dayweather": "雷阵雨", 
-                    "nightweather": "雷阵雨", 
-                    "daytemp": "32", 
-                    "nighttemp": "26", 
-                    "daywind": "无风向", 
-                    "nightwind": "无风向", 
-                    "daypower": "≤3", 
-                    "nightpower": "≤3"
-                }, 
-                {
-                    "date": "2018-08-24", 
-                    "week": "5", 
-                    "dayweather": "雷阵雨", 
-                    "nightweather": "雷阵雨", 
-                    "daytemp": "31", 
-                    "nighttemp": "26", 
-                    "daywind": "无风向", 
-                    "nightwind": "无风向", 
-                    "daypower": "≤3", 
-                    "nightpower": "≤3"
-                }
-            ]
-        }
-    ]
-}
-```
-
-### 获取 XML 格式返回值
-
-> 以上两个方法第二个参数为返回值类型，可选 `json` 与 `xml`，默认 `json`：
-
-```php
-$response = $weather->getLiveWeather('深圳', 'xml');
-```
-
-示例：
-
-```xml
-<response>
-    <status>1</status>
-    <count>1</count>
-    <info>OK</info>
-    <infocode>10000</infocode>
-    <lives type="list">
-        <live>
-            <province>广东</province>
-            <city>深圳市</city>
-            <adcode>440300</adcode>
-            <weather>中雨</weather>
-            <temperature>27</temperature>
-            <winddirection>西南</winddirection>
-            <windpower>5</windpower>
-            <humidity>94</humidity>
-            <reporttime>2018-08-21 16:00:00</reporttime>
-        </live>
-    </lives>
-</response>
+]
 ```
 
 ### 参数说明
 
 ```
-array | string   getLiveWeather(string $city, string $format = 'json')
-array | string   getForecastsWeather(string $city, string $format = 'json')
-```
+array  public function translate($query, $from, $to)
+public $langue = ['zh', 'en', 'yue', 'wyw', 'jp', 'kor', 'fra', 'spa', 'th', 'ara', 'ru', 'pt', 'de', 'it', 'el', 'nl', 'pl', 'bul', 'est', 'dan', 'fin', 'cs', 'rom', 'slo', 'swe', 'hu', 'cht', 'vie'];
 
-> - `$city` - 城市名/[高德地址位置 adcode](https://lbs.amap.com/api/webservice/guide/api/district)，比如：“深圳” 或者（adcode：440300）；
-> - `$format`  - 输出的数据格式，默认为 json 格式，当 output 设置为 “`xml`” 时，输出的为 XML 格式的数据。
+```
 
 ## 参考
 
-- [overtrue/weather](https://github.com/overtrue/weather)
-- [高德开放平台天气接口](https://lbs.amap.com/api/webservice/guide/api/weatherinfo/)
+[百度翻译开放平台](http://fanyi-api.baidu.com/api/trans/product/apidoc)
 
 ## 感谢
-> 非常感谢  [overtrue/weather](https://github.com/overtrue/weather)
+
+> 非常感谢 [Yii](https://www.yiiframework.com/)
+
 ## License
 
 MIT
-"# yii2-bd-translate" 

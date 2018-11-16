@@ -1,10 +1,11 @@
 <?php
+
 /**
-* Created by PhpStorm.
-* User: saviorlv
-* Date: 2018/10/30
-* Time: 13:16
-* @author saviorlv <1042080686@qq.com>
+ * Created by PhpStorm.
+ * User: saviorlv
+ * Date: 2018/10/30
+ * Time: 13:16
+ * @author saviorlv <1042080686@qq.com>
  */
 
 namespace Saviorlv\Baidu;
@@ -44,7 +45,7 @@ class Translate extends Component
     /**
      * @var array
      */
-    public $langue = ['zh', 'en', 'yue', 'wyw', 'jp', 'kor', 'fra', 'spa', 'th', 'ara', 'ru', 'pt', 'de', 'it', 'el', 'nl', 'pl', 'bul', 'est', 'dan', 'fin', 'cs', 'rom', 'slo', 'swe', 'hu', 'cht', 'vie' ];
+    public $langue = ['zh', 'en', 'yue', 'wyw', 'jp', 'kor', 'fra', 'spa', 'th', 'ara', 'ru', 'pt', 'de', 'it', 'el', 'nl', 'pl', 'bul', 'est', 'dan', 'fin', 'cs', 'rom', 'slo', 'swe', 'hu', 'cht', 'vie'];
 
     /**
      * @throws InvalidConfigException
@@ -85,17 +86,17 @@ class Translate extends Component
     public function translate($query, $from, $to)
     {
 
-        if(!\in_array($from,$this->langue)){
-            throw new InvalidParamException('Invalid response langue from: '.$from);
+        if (!\in_array($from, $this->langue)) {
+            throw new InvalidParamException('Invalid response langue from: ' . $from);
         }
-        if(!\in_array($to,$this->langue)){
-            throw new InvalidParamException('Invalid response langue to: '.$to);
+        if (!\in_array($to, $this->langue)) {
+            throw new InvalidParamException('Invalid response langue to: ' . $to);
         }
 
         $args = array(
             'q' => $query,
             'appid' => $this->app_id,
-            'salt' => rand(10000,99999),
+            'salt' => rand(10000, 99999),
             'from' => $from,
             'to' => $to,
 
@@ -108,7 +109,7 @@ class Translate extends Component
             ])->getBody()->getContents();
 
             $res = \json_decode($response, true);
-            return $res;
+            return self::returnMsg($res);
         } catch (\Exception $e) {
             throw new RequestException($e->getMessage(), $e->getCode(), $e);
         }
@@ -130,7 +131,8 @@ class Translate extends Component
     /**
      * @return array
      */
-    protected function getCodeMsg(){
+    protected function getCodeMsg()
+    {
         return [
             52000 => "成功",
             52001 => "请求超时",
@@ -152,11 +154,15 @@ class Translate extends Component
      * @param array $data
      * @return array
      */
-    protected function returnMsg($code=0,$msg='请求成功',$data=[]){
+    protected function returnMsg($res)
+    {
         $arrayMsg = self::getCodeMsg();
-        if(isset($arrayMsg[$code])){
+        if (isset($res['error_code'])) {
+            $code = $res['error_code'];
             $msg = $arrayMsg[$code];
+            return ['code' => $code, 'msg' => $msg, 'data' => $res['data']];
+        } else {
+            return ['code' => "0", 'msg' => "请求成功", 'data' => $res];
         }
-        return ['code'=>$code,'msg'=>$msg,'data'=>$data];
     }
 }
