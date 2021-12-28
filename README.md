@@ -3,7 +3,7 @@
 ## 安装
 
 ```sh
-$ composer require saviorlv/yii2-bd-translate -vvv
+$ composer require saviorlv/yii2-bd-translate
 ```
 
 ## 配置

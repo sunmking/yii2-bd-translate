@@ -18,8 +18,8 @@ use yii\base\InvalidParamException;
 use GuzzleHttp\Exception\RequestException;
 
 /**
- * Class Weather
- * @package Saviorlv\Amap
+ * Class Translate
+ * @package Saviorlv\Baidu
  */
 class Translate extends Component
 {
